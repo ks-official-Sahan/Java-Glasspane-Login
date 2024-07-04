@@ -1,7 +1,10 @@
 package main;
 
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import model.MySQL;
 
@@ -121,67 +124,44 @@ public class Login extends javax.swing.JFrame {
     private void cmdLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoginActionPerformed
         String user = txtUser.getText();
         String pass = String.valueOf(txtPassword.getPassword());
-        
-        
+
         if (user.isEmpty()) {
 
             JOptionPane.showMessageDialog(this, "Enter Your Username", "Warning", JOptionPane.ERROR_MESSAGE);
 
-        }else if (pass.isEmpty()) {
+        } else if (pass.isEmpty()) {
 
             JOptionPane.showMessageDialog(this, "Enter your Password", "Warning", JOptionPane.ERROR_MESSAGE);
 
-        }else{
-        
-        try {
-            
-          ResultSet resultSet = MySQL.execute("SELECT * FROM `users` WHERE `username`='"+user+"' AND `password`='"+pass+"'");
-          
-          if(resultSet.next()){
-          
-              this.dispose();
-          
-          }else{
-          
-                JOptionPane.showMessageDialog(this, "Invalid Username or Password", "Warning", JOptionPane.ERROR_MESSAGE);    
-          
-          }
-          
-            
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+
+            try {
+
+                ResultSet resultSet = MySQL.execute("SELECT * FROM `users` WHERE `username`='" + user + "' AND `password`='" + pass + "'");
+
+                if (resultSet.next()) {
+
+                    this.dispose();
+
+                } else {
+
+                    JOptionPane.showMessageDialog(this, "Invalid Username or Password", "Warning", JOptionPane.ERROR_MESSAGE);
+
+                }
+
+            } catch (HeadlessException | SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
         }
-        
-        }
-        
+
     }//GEN-LAST:event_cmdLoginActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        FlatMacDarkLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
